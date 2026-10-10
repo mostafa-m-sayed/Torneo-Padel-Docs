@@ -3,57 +3,119 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Torneo Padel — Organize Padel Tournaments</title>
+<title>Torneo Padel — Run padel tournaments from your phone</title>
+<meta name="description" content="Free padel tournament app for iPhone and Android: groups or Americano, automatic schedules and courts, live scores, knockouts and leagues. No account, no ads.">
+<link rel="icon" type="image/png" href="assets/app-icon.png">
 <style>
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 720px; margin: 0 auto; padding: 80px 20px; color: #1a1a1a; line-height: 1.6; text-align: center; }
-  h1 { font-size: 36px; margin-bottom: 8px; }
-  .tagline { font-size: 18px; color: #555; margin-bottom: 40px; }
-  .features { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; text-align: left; margin: 40px 0; }
-  .feature h3 { margin-bottom: 4px; font-size: 16px; }
-  .feature p { margin: 0; color: #555; font-size: 14px; }
-  .cta { margin-top: 40px; }
-  .cta a { display: inline-block; background: #111; color: #fff; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; }
-  .showcase { margin: 56px 0; }
-  .showcase img { max-width: 100%; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.25); }
-  footer { margin-top: 80px; font-size: 13px; color: #999; }
-  footer a { color: #999; }
+  :root {
+    --navy-top: #10306a; --navy-bottom: #040a1c; --card: rgba(255,255,255,0.06);
+    --line: rgba(91,140,255,0.25); --text: #ffffff; --soft: #b9c8ee; --gold: #f5b82e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--text); line-height: 1.6;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Arabic", sans-serif;
+    background: linear-gradient(180deg, var(--navy-top) 0%, var(--navy-bottom) 55%, #02050f 100%);
+    background-attachment: fixed;
+  }
+  main { max-width: 1040px; margin: 0 auto; padding: 64px 20px 40px; }
+  .hero { text-align: center; }
+  .hero img { width: 128px; height: 128px; border-radius: 28px; box-shadow: 0 16px 50px rgba(245,184,46,0.25), 0 10px 30px rgba(0,0,0,0.5); }
+  h1 { font-size: 44px; margin: 24px 0 6px; letter-spacing: -0.5px; }
+  .bar { width: 72px; height: 6px; border-radius: 3px; background: var(--gold); margin: 0 auto 18px; }
+  .tagline { font-size: 20px; color: var(--soft); margin: 0 auto 10px; max-width: 620px; }
+  .facts { color: var(--gold); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 30px; }
+  .stores { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .store {
+    display: inline-flex; flex-direction: column; align-items: flex-start; min-width: 190px;
+    padding: 10px 22px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.35);
+    background: rgba(0,0,0,0.35); color: #fff; text-decoration: none;
+  }
+  .store.live { background: #fff; color: #0b1d44; border-color: #fff; }
+  .store.live small { color: #42507a; }
+  .store small { font-size: 11px; color: var(--soft); text-transform: uppercase; letter-spacing: 1px; }
+  .store span { font-size: 19px; font-weight: 700; }
+  .shots { display: flex; gap: 18px; justify-content: center; margin: 56px 0 24px; overflow-x: auto; padding-bottom: 8px; }
+  .shots img { width: 220px; border-radius: 18px; box-shadow: 0 18px 50px rgba(0,0,0,0.55); flex: 0 0 auto; }
+  h2 { text-align: center; font-size: 30px; margin: 56px 0 8px; }
+  .sub { text-align: center; color: var(--soft); margin: 0 auto 28px; max-width: 640px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
+  .card h3 { margin: 0 0 6px; font-size: 17px; }
+  .card p { margin: 0; color: var(--soft); font-size: 15px; }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; counter-reset: step; }
+  .step { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
+  .step::before { counter-increment: step; content: counter(step); display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--gold); color: #10213f; font-weight: 800; margin-bottom: 10px; }
+  .step h3 { margin: 0 0 4px; font-size: 17px; }
+  .step p { margin: 0; color: var(--soft); font-size: 15px; }
+  .ar { direction: rtl; text-align: center; color: var(--soft); margin-top: 48px; font-size: 17px; }
+  footer { text-align: center; margin-top: 56px; padding: 24px 20px 40px; font-size: 13px; color: #8e9bbf; border-top: 1px solid rgba(255,255,255,0.08); }
+  footer a { color: #b9c8ee; }
+  @media (max-width: 760px) {
+    h1 { font-size: 34px; }
+    .grid, .steps { grid-template-columns: 1fr; }
+    .shots { justify-content: flex-start; }
+    .shots img { width: 180px; }
+  }
 </style>
 </head>
 <body>
-  <h1>Torneo Padel</h1>
-  <p class="tagline">Padel tournaments made easy — free, and built for organizers on the go.</p>
+<main>
+  <section class="hero">
+    <img src="assets/app-icon.png" alt="Torneo Padel app icon">
+    <h1>Torneo Padel</h1>
+    <div class="bar"></div>
+    <p class="tagline">Run your whole padel tournament from your phone, from the draw to the trophy.</p>
+    <p class="facts">iPhone &amp; Android · Free · No account · No ads</p>
+    <div class="stores">
+      <a class="store live" href="https://apps.apple.com/app/id6810219716"><small>Download on the</small><span>App Store</span></a>
+      <span class="store"><small>Coming soon to</small><span>Google Play</span></span>
+    </div>
+  </section>
 
-  <div class="features">
-    <div class="feature">
-      <h3>🏆 Automatic Brackets</h3>
-      <p>Group-stage round-robin with automatic cross-group semis and finals — any number of teams.</p>
-    </div>
-    <div class="feature">
-      <h3>📊 Live Standings</h3>
-      <p>Tables update instantly as results come in.</p>
-    </div>
-    <div class="feature">
-      <h3>📅 Smart Scheduling</h3>
-      <p>Generate match schedules that fit your courts and time.</p>
-    </div>
-    <div class="feature">
-      <h3>📱 Run It Courtside</h3>
-      <p>Manage the whole tournament from your phone — no laptop, no printouts.</p>
-    </div>
+  <div class="shots">
+    <img src="assets/06-schedule_live.jpg" alt="Schedule with named courts and live scores">
+    <img src="assets/14-am_matches.jpg" alt="Americano matches with rotating partners and sit-outs">
+    <img src="assets/10-knockout_live.jpg" alt="Knockout bracket filling in as results come in">
+    <img src="assets/12-results.jpg" alt="Results podium ready to share">
   </div>
 
-  <div class="showcase">
-    <img src="screenshots.jpg" alt="Torneo Padel app screenshots showing tournament brackets, live match scoring, and standings">
+  <h2>Two ways to play</h2>
+  <p class="sub">Pick the format at setup. The app handles the rest.</p>
+  <div class="grid">
+    <div class="card"><h3>🏆 Groups → Knockout</h3><p>Fixed pairs play in groups, then a seeded bracket up to 64 teams, with byes and an optional third-place match.</p></div>
+    <div class="card"><h3>📊 Groups → Mini League</h3><p>The qualifiers play each other once and the final table crowns the champion.</p></div>
+    <div class="card"><h3>🔄 Americano</h3><p>4 to 40 players, a new partner every round, the same number of matches for everyone and fair sit-outs.</p></div>
+    <div class="card"><h3>🎯 Points or games</h3><p>Play Americano to 16, 21, 24 or 32 points, or to a short or long set.</p></div>
+    <div class="card"><h3>🥇 Final and consolation</h3><p>Americano groups lead to a final, and the other players keep playing in consolation groups by level.</p></div>
+    <div class="card"><h3>⚖️ Fair by design</h3><p>Balanced random draws, no team playing twice in a round, and partners that don't repeat.</p></div>
   </div>
 
-  <div class="cta">
-    <a href="#">Download on the App Store</a>
+  <h2>Everything on match day</h2>
+  <p class="sub">Built for organizers on the move, and for everyone watching.</p>
+  <div class="grid">
+    <div class="card"><h3>📅 Schedules and courts</h3><p>Fixtures and courts are assigned automatically. Name your courts to match the venue.</p></div>
+    <div class="card"><h3>⚡ Scores in seconds</h3><p>Tap a match, tap a quick score, done. Standings update instantly.</p></div>
+    <div class="card"><h3>📱 Follow live</h3><p>Share the tournament code: players and fans follow scores and brackets on their own phones, iPhone or Android.</p></div>
+    <div class="card"><h3>🔀 Change the order</h3><p>Drag and drop to swap matches; the app blocks swaps that don't work.</p></div>
+    <div class="card"><h3>🖨️ Table and PDF</h3><p>See the whole day as rounds × courts, then print or share it as a PDF.</p></div>
+    <div class="card"><h3>🎉 Share the podium</h3><p>A ready-made results picture and message for WhatsApp, Instagram or the club group.</p></div>
   </div>
 
-  <footer>
-    &copy; 2026 Mostafa Sayed. All rights reserved. ·
-    <a href="support.html">Support</a> ·
-    <a href="privacy.html">Privacy</a>
-  </footer>
+  <h2>Up and running in minutes</h2>
+  <div class="steps" style="margin-top: 24px;">
+    <div class="step"><h3>Set it up</h3><p>Choose the format, courts and scoring.</p></div>
+    <div class="step"><h3>Add players</h3><p>Type the names, then randomize a fair draw.</p></div>
+    <div class="step"><h3>Play</h3><p>Share the code and enter scores as matches finish.</p></div>
+  </div>
+
+  <p class="ar">تورنيو بادل متوفر بالعربية والإنجليزية · نظّم بطولات البادل من هاتفك</p>
+</main>
+
+<footer>
+  &copy; 2026 Mostafa Sayed. All rights reserved. ·
+  <a href="support.html">Support</a> ·
+  <a href="privacy.html">Privacy</a>
+</footer>
 </body>
 </html>
